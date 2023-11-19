@@ -22,7 +22,7 @@ awk "$6==0&$7>1" quality_summary.tsv|cut -f1 -d$'\t' > discard_seq.txt
 
 ```
 
-###### manully check-keep
+### manully check-keep
 1. 结构基因、hallmark 基因、注释缺失或假设性富集(~10% 的基因具有 non-hypothetical 注释)。
     
     超过10%基因可被注释功能/与已知基因相似
@@ -37,7 +37,7 @@ awk "$6==0&$7>1" quality_summary.tsv|cut -f1 -d$'\t' > discard_seq.txt
     
 6. LPS (脂多糖)外观区域对病毒基因的命中率也非常高looking regions if also has very strong hits to viral genes，bitscore>100。
 
-###### manully check-discard
+### manully check-discard
 
 8. 细胞样基因是病毒基因的 3 倍，几乎所有基因都有注释，没有基因只命中病毒，也没有病毒标志基因hallmark genes。
     
