@@ -26,17 +26,17 @@ DeePhage('input_file.fasta','output_file.csv')
 
 - **Default** :
 
-score<0.5 → temperate phage-derived fragment
+  score<0.5 → temperate phage-derived fragment
 
-score>0.5 → virulent phage-derived fragment
+  score>0.5 → virulent phage-derived fragment
 
 - **If has a cutoff**:
 
-score between (0.5-cutoff , 0.5+cutoff) → "uncertain"
+  score between (0.5-cutoff , 0.5+cutoff) → "uncertain"
 
-score < 0.5-cutoff → temperate phage-derived fragment
+  score < 0.5-cutoff → temperate phage-derived fragment
 
-score > 0.5+cutoff → virulent phage-derived fragment
+  score > 0.5+cutoff → virulent phage-derived fragment
 
 ```
 ./DeePhage example.fna result.csv 0.7
