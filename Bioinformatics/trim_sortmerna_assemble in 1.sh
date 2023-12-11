@@ -16,4 +16,4 @@ sortmerna --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/rfam-5.8s-databa
 conda deactivate
 source /data01nfs/user/liupf/miniconda3/bin/activate
 conda activate megahit
-megahit -1 /datanode03/zhujy/sortmerna_out/23033PC1_fwd.fq.gz -2 /datanode03/zhujy/sortmerna_out/23033PC1_rev.fq.gz -t 60 --out-prefix 23033PC1_megahit --out-dir /datanode03/zhujy/megahit_out/23033PC1 &> /datanode03/zhujy/megahit_out/megahit_log/23033PC1.log
+megahit -1 /datanode03/zhujy/sortmerna_out/23033PC1.unalign_fwd.fq.gz -2 /datanode03/zhujy/sortmerna_out/23033PC1.unalign_rev.fq.gz -t 60 --out-prefix 23033PC1_megahit --out-dir /datanode03/zhujy/megahit_out/23033PC1 &> /datanode03/zhujy/megahit_out/megahit_log/23033PC1.log
