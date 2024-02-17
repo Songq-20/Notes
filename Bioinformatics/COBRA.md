@@ -67,5 +67,5 @@ log
 debug.txt
 contig.new.fa
 ```
-![Flow Graph](image.png)
+![Flow Graph](https://github.com/17636522204/Notes/blob/b1e5ee7f3a0624db470b53b20e99c1b47931da1e/Picture/COBRA_FLOW.png)
 **More details in github**
