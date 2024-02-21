@@ -1,3 +1,4 @@
+```Shell
 #!/bin/bash
 #SBATCH -J cobra
 #SBATCH -p cn-long
@@ -30,9 +31,10 @@ jgi_summarize_bam_contig_depths --outputDepth cobra-temp/{Sample-id}-coverage.tx
 conda deactivate
 python ~/coverage.transfer.py -i cobra-temp/{Sample-id}-coverage.txt -o coverage/{Sample-id}_coverage.txt
 conda deactivate
-
+```
 # Step4 running COBRA #
 # -q: checkv_input(vs2+genomad) : -m: *sam from bowtie2 #
 source activate cobra
 cobra-meta -f Megahit_out/{Sample-id}/{Sample-id}_megahit.contigs.fa -q checkv_in/{Sample-id}.fa -o COBRA/611_RW_MV_COBRA -c coverage/{Sample-id}_coverage.txt -m mapping/{Sample-id}-MV.sam -a megahit -mink 21 -maxk 141 
 conda deactivate
+```
