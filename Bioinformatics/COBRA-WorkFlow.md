@@ -31,7 +31,7 @@ jgi_summarize_bam_contig_depths --outputDepth cobra-temp/{Sample-id}-coverage.tx
 conda deactivate
 python ~/coverage.transfer.py -i cobra-temp/{Sample-id}-coverage.txt -o coverage/{Sample-id}_coverage.txt
 conda deactivate
-```
+
 # Step4 running COBRA #
 # -q: checkv_input(vs2+genomad) : -m: *sam from bowtie2 #
 source activate cobra
