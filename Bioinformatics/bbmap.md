@@ -1,7 +1,7 @@
 >dir : /data01nfs/user/liupf/software_lpf/bbmap/*
 ### for example
 ```
-/data01nfs/user/liupf/software_lpf/bbmap/stats.sh in=input.fasta
+/data01nfs/user/liupf/software_lpf/bbmap/stats.sh in=input.fasta 
 
 ## output
 A       C       G       T       N       IUPAC   Other   GC      GC_stdev
