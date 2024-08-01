@@ -9,5 +9,3 @@ Perfect
 daima    
 ```   
 ---
-
-cjcnnvncvncvnvnvnv
