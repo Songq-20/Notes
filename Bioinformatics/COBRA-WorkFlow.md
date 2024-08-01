@@ -10,31 +10,40 @@
 #SBATCH -A cnl
 
 cd /datanode03/songq
+
+# Step1 获取 query id #
+
+source activate /datanode03/zhangxf/programs/mambaforge/envs/seqkit
+seqkit seq megahit.contigs.fa -n -i > query_id.txt
+conda deactivate
+#用什么标准去筛选 query id 需要商定
+
+# Step2 Bowtie2 获取 sam 文件 #
+
 source /data01nfs/user/liupf/miniconda3/bin/activate
-
-# Step1 Bowtie2 to get *.sam #
 conda activate bowtie2
-bowtie2-build Megahit_out/{Sample-id}/{Sample-id}_megahit.contigs.fa mapping/{Sample-id}-contig-bowtie2index
-bowtie2 -x mapping/{Sample-id}-contig-bowtie2index -1 Trimmed_out/{Sample-id}/{Sample-id}.R1_trimmed.fq.gz -2 Trimmed_out/{Sample-id}/{Sample-id}.R2_trimmed.fq.gz -S mapping/{Sample-id}.sam --threads 60 --sensitive --no-unal
+bowtie2-build megahit.contigs.fa id_bowtie2index
+bowtie2 -x id_bowtie2index -1 id.R1_trimmed.fq.gz -2 id.R2_trimmed.fq.gz -S id.sam --threads 60 --sensitive --no-unal
 conda deactivate
 
-# Step2 Samtools to get filtered & sorted *bam #
+# Step3 Samtools 获取排序后的 bam 文件 #
+source /data01nfs/user/liupf/miniconda3/bin/activate
 conda activate samtools
-samtools view -@ 60 -bS mapping/{Sample-id}.sam > mapping/{Sample-id}.bam
-samtools view -h -@ 60 -q 30 -F 0x08 -b -f 0x2 mapping/{Sample-id}.bam > mapping/{Sample-id}-filtered.bam
-samtools sort -@ 60 mapping/{Sample-id}-filtered.bam -o mapping/{Sample-id}-cobra-fs.bam
+samtools view -@ 60 -bS id.sam > id.bam
+samtools view -h -@ 60 -q 30 -F 0x08 -b -f 0x2 idbam > id-filtered.bam
+samtools sort -@ 60 id-filtered.bam -o id-cobra-fs.bam
 conda deactivate
 
-# Step3 MetaBAT2 & coverage.transfer.py to get coverage.txt #
-conda activate metabat2
-jgi_summarize_bam_contig_depths --outputDepth cobra-temp/{Sample-id}-coverage.txt mapping/{Sample-id}-MV-cobra-fs.bam
+# Step4 MetaBAT2 & coverage.transfer.py 获取 coverage.txt #
+conda activate /data01nfs/apps/anaconda3/envs/metabat2-2.15
+jgi_summarize_bam_contig_depths --outputDepth id-coverage_raw.txt id-cobra-fs.bam
 conda deactivate
-python ~/coverage.transfer.py -i cobra-temp/{Sample-id}-coverage.txt -o coverage/{Sample-id}_coverage.txt
+python3 ~/coverage.transfer.py -i id-coverage_raw.txt -o id_coverage.txt
 conda deactivate
 
-# Step4 running COBRA #
-# -q: checkv_input(vs2+genomad) : -m: *sam from bowtie2 #
+# Step5  COBRA #
+# -q: checkv_input(vs2+genomad) : -m: bam from samtools #
 source activate cobra
-cobra-meta -f Megahit_out/{Sample-id}/{Sample-id}_megahit.contigs.fa -q checkv_in/{Sample-id}.fa -o COBRA/611_RW_MV_COBRA -c coverage/{Sample-id}_coverage.txt -m mapping/{Sample-id}-MV.sam -a megahit -mink 21 -maxk 141 
+cobra-meta -f megahit.contigs.fa -q checkv_in/{Sample-id}.fa -o Output_dir -c id_coverage.txt -m id-cobra-fs.bam -a megahit -mink 21 -maxk 141 
 conda deactivate
 ```
