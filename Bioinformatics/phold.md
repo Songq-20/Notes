@@ -16,9 +16,18 @@ wget https://raw.githubusercontent.com/gbouras13/phold/main/tests/test_data/NC_0
 ```
 ## Usage
 
+### fasta -> gbk
+```shell
+source /datanode03/wenr/miniforge3/bin/activate
+conda activate pharokkaENV
+pharokka.py -i file.fasta -d /datanode03/wenr/pharokka_db -o output_dir -t 8 --fast
+conda deactivate
+
+### gbk file in output_file
+```
 ### Quick Start
 ```shell
-phold run -i tests/test_data/NC_043029.gbk  -o test_output_phold -t 20 --cpu
+phold run -i file.gbk  -o output_dir -t 20 --cpu
 ```
 ### 2 Steps run
 ```shell
