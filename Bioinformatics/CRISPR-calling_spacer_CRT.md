@@ -1,5 +1,5 @@
 # CRISPR-calling_spacer_CRT  
-## virus host prodiction by direct blastn
+## virus host prediction by direct blastn
 
 > target, vOTUs seqs, query, CRISPR spacer from MAGs or genomes, CRT prediction
 
