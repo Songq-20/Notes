@@ -19,7 +19,7 @@ prodigal -i metaT_750.fa -a metaT.faa -p meta
 #SBATCH -e log/luca.err
 
 conda activate lucaprot
-cd /data/groups/lzu_public/home/liupf//LucaProt/src/
+cd /data/groups/lzu_public/home/liupf/LucaProt/src/
 export CUDA_VISIBLE_DEVICES="0,1,2,3"
 python predict_many_samples.py \
         --fasta_file path_to_metaT.faa  \
@@ -36,3 +36,4 @@ python predict_many_samples.py \
         --print_per_number 10 \
         --gpu_id 0
 ```
+LucaProt 输出有 `.csv` 文件和一些在 `emb` 文件夹内的 `.pt` 文件, `.pt`文件占用很大，不知道要不要删除。
