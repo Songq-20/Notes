@@ -19,7 +19,7 @@ unzip BASALT.zip
 
 ### 运行
 ```shell
-source /data01nfs/user/songq/anaconda3/bin/activate
+source /datanode03/songq/mambaforge/bin/activate
 conda activate BASALT
 export CHECKM2DB="/datanode03/huangxy/database/checkm_data/CheckM2_database/uniref100.KO.1.dmnd"
 # use CheckM2

@@ -63,7 +63,7 @@ done<id.list
 `5k files cat > all_in_one_rename.fa`
 <br>
 
-### Genomic prediction 
+### 病毒基因组注释 
 ```bash
 ######VirSorter2######
 #SBATCH
@@ -131,7 +131,7 @@ merge3 <- merge(merge2,dvf,by.x="raw.id",by.y="raw.id",all.x=T,all.y=T)
 
 write.table(merge3,file="mergeall.txt",sep="\t",quote=F,col.names = T,row.names = F)
 ```
-### Check V
+### CheckV
 ```bash
 #### seqkit ####
 #SBATCH
@@ -225,9 +225,9 @@ source /data01nfs/user/huangxy/programs/anaconda3/bin/activate
 conda activate vibrant
 cd /data01nfs/user/liupf/software_lpf/viralrecall
 # 必须在这个目录下提交任务
-mkdir songq songq_viralrecall-out 
+mkdir input_folder viralrecall-out 
 cp dir/input.fa songq
-nohup python ./viralrecall.py -i songq -p songq_viralrecall-out -t 6 -b &
+nohup python ./viralrecall.py -i input_folder -p viralrecall-out -t 6 -b &
 
 ##退出登录前可以通过jobs查看
 #但是退出后，可以通过top -u liupf查看，退出该命令control + C 退出top页面
@@ -235,6 +235,7 @@ nohup python ./viralrecall.py -i songq -p songq_viralrecall-out -t 6 -b &
 #.full_annot.tsv主要看vog和pfam这两列，vog是一个专门的病毒数据库，这一列会给出病毒蛋白编号，pfam是解释这是什么蛋白
 #.summary.tsv主要看marker基因，根据阈值是0.9 or 0.95来判断是巨病毒，也能通过巨病毒的marker基因来判断
 ```
+
 ### 分类注释
 ```shell
 ### vContact2 ###
@@ -253,167 +254,36 @@ conda activate genomad
 genomad end-to-end --min-score 0.7 --cleanup <input> <output> /datanode03/huangxy/database/genomad_db
 
 ### VPF-Class ###
+nohup /home/dell/huangxingyu/vpf-class-x86_64-linux@dd88a543f28eb339cf0dcb89f34479c84b3a8056  --data-index /home/dell/software/vpf-tools/vpf-class-data/index.yaml  -i your_input_file -o your_out_put_dir &
 
+#按照 vContant2 > geNomad > PhaGCN2.0 > VPF-Class 的优先级判定分类情况
 
-```
-### DRAM Prodigal得到 .faa
-```
-
-conda activate /data03nfs/temp/temp_PTPE2/Software/miniconda3/envs/DRAM
-prodigal -i vOTU.fna -a /datanode03/songq/vOTU.faa -p meta
-
-```
-### VContact2 注释蛋白
-```Shell
-source /datanode03/zhangxf/programs/mambaforge/bin/activate
-conda activate vContact2
-/datanode03/zhangxf/programs/mambaforge/envs/vContact2/MAVERICLab-vcontact2-aaa065683c99/bin/vcontact2_gene2genome -p vOTU.faa -o /datanode03/songq/vOTU-vcontact2.csv -s Prodigal-FAA
-
-/datanode03/zhangxf/programs/mambaforge/envs/vContact2/MAVERICLab-vcontact2-aaa065683c99/bin/vcontact2 --raw-proteins vOTU.faa --rel-mode Diamond --proteins-fp vOTU-vcontact2.csv --db 'ProkaryoticViralRefSeq201-Merged' --pcs-mode MCL --vcs-mode ClusterONE --c1-bin /datanode03/zhangxf/programs/mambaforge/envs/vContact2/MAVERICLab-vcontact2-aaa065683c99/bin/cluster_one-1.0.jar --output-dir /datanode03/songq/vc2  -t 36
-```
-### blastn
-```shell
-source /data01nfs/apps/anaconda3/bin/activate
-conda activate blast-2.5
-blastn -task megablast -query vOTU.fna -db /datanode03/huangxy/database/IMG_VR_v4/IMG_VR_all/IMGVR_all_nucleotides -num_threads 16 -out /datanode03/songq/votu-blastn/HH_5KB_vrius1-2IMGVR.tsv -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen" -perc_identity 90 -qcov_hsp_perc 75
-
-conda activate /datanode03/zhangxf/programs/mambaforge/envs/blast
-blastn -task megablast -query vOTU.fna -db /datanode03/huangxy/database/refvirus/viral.1.1.genomic -num_threads 16 -out /datanode03/songq/votu-blastn/HH_5KB_vrius1-2refvirus.tsv -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen" -perc_identity 90 -qcov_hsp_perc 75
 ```
 ### DRAM-V
 ```shell
-#Pre-DRAM
+#### Pre-DRAM
 source activate /datanode03/huangxy/programs/anaconda3/envs/vs2
 virsorter run --seqname-suffix-off --provirus-off  --keep-original-seq --viral-gene-enrich-off -w virsorter_prepare -i vOTU.fna --prep-for-dramv --min-length 0 --min-score 0  -j 16 all 
 
-####DRAM-v
-#!/bin/bash
-#SBATCH -J dramv
-#SBATCH -p cn-long
-#SBATCH -N 1
-#SBATCH -c 50
-#SBATCH -o /data01nfs/user/songq/log/dramv.out
-#SBATCH -e /data01nfs/user/songq/log/dramv.err
-#SBATCH --no-requeue
-#SBATCH -A cnl
+#### DRAM-v
+
 conda activate /datanode03/zhangxf/anaconda3/envs/DRAM
 DRAM-v.py annotate -i virsorter_prepare/for-dramv/final-viral-combined-for-dramv.fa -v /datanode03/songq/virsorter_prepare/for-dramv/viral-affi-contigs-for-dramv.tab -o /datanode03/songq/dramv/dramv_result --threads 36
 DRAM-v.py annotate -i vOTU.fna -o dramv/DRAMwithoutvs --threads 36
-```
-```shell
-#!/bin/bash
-#SBATCH -J dramv
-#SBATCH -p cn-long
-#SBATCH -N 1
-#SBATCH -c 50
-#SBATCH -o /data01nfs/user/songq/log/dramv.out
-#SBATCH -e /data01nfs/user/songq/log/dramv.err
-#SBATCH --no-requeue
-#SBATCH -A cnl
-conda activate /datanode03/zhangxf/anaconda3/envs/DRAM
+
 DRAM-v.py distill -i /datanode03/songq/dramv/dramv_result/annotations.tsv -o dramv-distill
 DRAM-v.py distill -i /datanode03/songq/dramv/DRAMwithoutvs/annotations.tsv -o votu-distill
 ```
 
-```
-#!/bin/bash
-#SBATCH -J bowtie2
-#SBATCH -p cn-long
-#SBATCH -N 1
-#SBATCH -c 50
-#SBATCH -o /data01nfs/user/songq/log/bowtie2.out
-#SBATCH -e /data01nfs/user/songq/log/bowtie2.err
-#SBATCH --no-requeue
-#SBATCH -A cnl
-source /data01nfs/apps/anaconda3/bin/activate
-conda activate bowtie2
-while read id
-R1trim="/datanode03/songq/Trimmed_out/${id}_MV/${id}.R1_trimmed.fq.gz"
-R2trim="/datanode03/songq/Trimmed_out/${id}_MV/${id}.R2_trimmed.fq.gz"
-bowtie2 -x bt2_ref/HH_vOTU_bowtie2.ref -1 ${R1trim} -2 ${R2trim} -S ${id}_HH_vOTU.sam --threads 36 --sensitive --no-unal
-done <id.list
+### iPhop 宿主预测
+```shell
 
-```
-> The tutorial from ZXF ends here
-
-### iPhop
-```
-#!/bin/bash
-#SBATCH -J ip
-#SBATCH -p cn-long
-#SBATCH -N 1
-#SBATCH -c 50
-#SBATCH -o /data01nfs/user/songq/log/ip.out
-#SBATCH -e /data01nfs/user/songq/log/ip.err
-#SBATCH --no-requeue
-#SBATCH -A cnl
-#SBATCH --mail-type=FAIL,END,BEGIN
-#SBATCH --mail-user=2261518989@qq.com
 source activate /data01nfs/apps/anaconda3/envs/iphop-1.3.1
 iphop predict --fa_file vOTU.fna --db_dir iphop_db/Aug_2023_pub_rw --out_dir iphop_out
+
+# 注意数据库版本号和软件版本号对应
+# 很慢，可以切割序列文件并行运行
+# 可以自定义数据库
 ```
-### VPF-Class
-```
-# 登录Dell服务器
-
-用登录其他账号的方法登录dell服务器。
-username dell
-key jyb-2021
-Ip 172.21.231.31
-
-# 新建文件夹
-mkdir wenr
-
-# 传输数据
-#Dell无法访问/datanode03的数据，需要传输过来
-#这一步需要重新登录自己的账号去传输
-
-scp /datanode03/wenr/your_file dell@210.26.123.136:/home/dell/wenr
-
-# 运行
-#重新登录dell
-
-cd wenr
-
-#现在/home/dell/wenr/下应该只有输入文件。
-
-mkdir your_out_put_dir
-
-nohup /home/dell/huangxingyu/vpf-class-x86_64-linux@dd88a543f28eb339cf0dcb89f34479c84b3a8056  --data-index /home/dell/software/vpf-tools/vpf-class-data/index.yaml  -i your_input_file -o your_out_put_dir &
-
-#回车运行。屏幕显示 【 nohup: 忽略输入并把输出追加到'nohup.out'】 之后就运行成功，可以进行 `ls` 等其他操作。
-#log在nohup.out
-#运行结束后scp将数据传输回/datanode03即可
-
-#获得数据进行处理，例如famlily 以及genus这两个文件夹 membership_ratio和confidence_score进行条件筛选
-具体是membership_ratio> 0.5  confidence_score > 0.75
-baltimore3.tsv 这个表格的筛选 membership_ratio> 0.2  confidence_score > 0.2
-
-```
-### PhaGCN
-Failed
-```
-#!/bin/bash
-#SBATCH -J PhaGCN
-#SBATCH -p cn-long
-#SBATCH -N 1
-#SBATCH -c 60
-#SBATCH -o /data01nfs/user/qinfs/log/pha.out
-#SBATCH -e /data01nfs/user/qinfs/log/pha.err
-#SBATCH --no-requeue
-#SBATCH -A cnl
-#SBATCH --mail-type=FAIL,END,BEGIN
-#SBATCH --mail-user=2261518989@qq.com
-mkdir phaGCN
-cd phaGCN
-mkdir out
-mkdir parameters
-mkdir scripts
-cd ..
-source /datanode03/huangxy/programs/anaconda3/bin/activate
-conda activate phabox
-python /data01nfs/user/huangxy/programs/PhaBOX-main/PhaGCN_single.py --contigs /dataonde03/songq/vOTU.fna --len 5000 --rootpth phaGCN --out out/ --dbdir /data01nfs/user/huangxy/database/phabox/database --parampth parameters/ --scriptpth scripts/
-```
-
 
 
