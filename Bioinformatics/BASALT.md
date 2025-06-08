@@ -25,17 +25,17 @@ export CHECKM2DB="/datanode03/huangxy/database/checkm_data/CheckM2_database/unir
 # use CheckM2
 
 # Sort read sequences(srs)
-BASALT -a assemble.fa -s R1.fq.gz,R2.fq.gz -t 20 -m 200 -qc checkm2
+BASALT -a assemble.fa -s R1.fq.gz,R2.fq.gz -t 20 -m 200 -q checkm2
 
 # srs + Long read sequences
-BASALT -a assemble.fa -s R1.fq.gz,R2.fq.gz -l lrs1.fq -t 20 -m 200 -qc checkm2
+BASALT -a assemble.fa -s R1.fq.gz,R2.fq.gz -l lrs1.fq -t 20 -m 200 -q checkm2
 
 # hifi
-BASALT -a assemble.fa -s R1.fq.gz,R2.fq.gz -l lrs1.fq -hf hifi1.fq -t 20 -m 200 -qc checkm2
+BASALT -a assemble.fa -s R1.fq.gz,R2.fq.gz -l lrs1.fq -hf hifi1.fq -t 20 -m 200 -q checkm2
 # Note: only PacBio-HiFi data is supported in v1.0.1 for long-read only assemblies
 ```
 ```shell
-BASALT -a as1.fa,as2.fa,as3.fa -s srs1_r1.fq,srs1_r2.fq/srs2_r1.fq,srs2_r2.fq -t 20 -m 200 -qc checkm2
+BASALT -a as1.fa,as2.fa,as3.fa -s srs1_r1.fq,srs1_r2.fq/srs2_r1.fq,srs2_r2.fq -t 20 -m 200 -q checkm2
 ```
 ### 可选参数
 `--autopara`	:	Autobinning parameters. 
