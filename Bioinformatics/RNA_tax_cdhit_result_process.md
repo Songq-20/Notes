@@ -38,7 +38,7 @@ NR == FNR {
         print $1;  # 不匹配时只输出原内容
     }
 }
-' your_file_fix_uniq_luca.tsv tax_db.tav > tax_result.tsv
+' tax_db.tsv your_file_fix_uniq_luca.tsv  > tax_result.tsv
 
 #将分类合并到序列上
 ```
