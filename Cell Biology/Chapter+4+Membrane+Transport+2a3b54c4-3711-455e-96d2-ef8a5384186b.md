@@ -106,46 +106,47 @@
 
 ### Endocytosis
 
-    - Phagocytosis(大分子颗粒)
-
+- Phagocytosis(大分子颗粒)
+  
         需要微丝蛋白参与，在胞内形成吞噬体。在高等多细胞生物中由吞噬细胞执行
-
+        
         原生生物：通过吞噬作用摄取食物。
-
-    - Pinocytosis（小分子、液体）
-
+    
+- Pinocytosis（小分子、液体）
+  
         连续发生，几乎所有真核细胞
 
-        
+
+​        
 
             - 网格蛋白依赖的胞吞作用（clathrin dependent endocytosis）
-
+    
                 ![6a80e10c70730e3ec4daf5192f6a494.jpg](Chapter+4+Membrane+Transport+2a3b54c4-3711-455e-96d2-ef8a5384186b/6a80e10c70730e3ec4daf5192f6a494.jpg)
-
+    
                 胆固醇运输：
-
+    
                 胆固醇+磷脂+蛋白质→低密度脂蛋白（LDL）
-
+    
                 LDL被胞吞后进入内体（endosome，有V-Pump，酸性，促进LDL与受体解离，运输其至溶酶体），进入溶酶体后LDL水解，胆固醇释放。
-
+    
         - 胞膜窖依赖的胞吞作用（caveola dep...）
-
+    
             特征蛋白是窖蛋白，在脂筏区域形成
-
+    
         - 非网格蛋白/胞膜窖依赖的胞吞作用（cla.../cave... indepandent ...）
 
 ### Exocytosis
 
     **组成型胞吐：**
-
+    
     - 存在于所有真核
-
+    
     - 质膜更新，细胞外基质组分、营养成分或信号分子的释放
-
+    
     **调节型胞吐：**
-
+    
     - 存在于特化的分泌细胞
-
+    
     - 释放激素、粘液、消化酶等。
 
 
