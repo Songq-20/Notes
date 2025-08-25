@@ -44,3 +44,26 @@ done < metaGid.txt.u
 ## Braken 
 ... To do ...
 
+## ARGs_OAP
+> Custom Database
+```
+#!/bin/bash
+#SBATCH -J vfdb-test
+#SBATCH -p cn-long2
+#SBATCH -N 1
+#SBATCH -c 10
+#SBATCH -o /datanode03/liupf/logs/vfdb-test.out
+#SBATCH -e /datanode03/liupf/logs/vfdb-test.err
+#SBATCH --no-requeue
+#SBATCH -A cnl2
+#SBATCH --mail-type=FAIL,END,BEGIN
+#SBATCH --mail-user=2261518989@qq.com
+source /datanode02/wuzz/miniconda3/bin/activate 
+conda activate args_oap
+
+args_oap stage_one -i input_dir -o output_dir -t 10 --database /datanode03/songq/database/VFDB/vfdb/VFDB_setB_nt.fas1;
+args_oap stage_two -i output_dir -t 10 --database /datanode03/songq/database/VFDB/vfdb/VFDB_setB_nt.fas1 --structure1 /datanode03/songq/database/VFDB/VFDB_structure.txt
+
+### 注意：将 “AAA_” 改为“=-”
+```
+
