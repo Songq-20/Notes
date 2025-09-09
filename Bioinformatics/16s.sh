@@ -2,11 +2,11 @@
 
 head -12 merged_f.fastq
 cat merged_f.fastq | head |grep --color='auto' 'GTGCCA.*CGGTAA' -E
-cat merged_f.fastq | head |grep --color='auto' 'GYGCAS.*GMGAAW' -E
+cat merged_f.fastq | head |grep --color='auto' 'AAACTT.*TGACGG' -E
 
 source /data01nfs/apps/anaconda3/bin/activate
-conda env list    
-conda activate seqkit-2.2.0   
+conda env list
+conda activate seqkit-2.2.0
 seqkit stats merged_f.fastq
 
 ./usearch -fastx_truncate merged_f.fastq -stripleft 19 -stripright 20 -fastqout stripped.fq
