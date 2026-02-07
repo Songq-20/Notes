@@ -19,7 +19,7 @@ DBDIR="/datanode02/zhangzh/database/kraken2_database"
 DIR="/datanode03/songq/songq_datanode03/Trimmed_out/"
 while read id
 do
-kraken2 --db $DBDIR --paired  ${DIR}${id}*R1*trimmed.fq.gz ${DIR}${id}*R1*trimmed.fq.gz --report ${id}.report  --report-minimizer-data --output ${id}.out
+kraken2 --db $DBDIR --paired  ${DIR}${id}*R1*trimmed.fq.gz ${DIR}${id}*R2*trimmed.fq.gz --report ${id}.report  --report-minimizer-data --output ${id}.out
 done < MGid.txt
 ```
 ## Get Proka_seq
