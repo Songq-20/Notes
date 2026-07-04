@@ -21,20 +21,21 @@
 #SBATCH -p cn-long
 #SBATCH -N 1
 #SBATCH -c 60
-#SBATCH -o /data01nfs/user/songq/log/trim.out
-#SBATCH -e /data01nfs/user/songq/log/trim.err
+#SBATCH -o /datanode03/songq/log/trim.out
+#SBATCH -e /datanode03/songq/log/trim.err
 #SBATCH --no-requeue
 #SBATCH -A cnl
-
-trimmomatic PE -threads 4  input.R1.fq.gz  input.R2.fq.gz  output_R1_trimmed.fq.gz  output_R1_trimmed_U.fq.gz  output_R2_trimmed.fq.gz  output_R2_trimmed_U.fq.gz ILLUMINACLIP:/data01nfs/user/liupf/common_files/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+sourse /datanode03/songq/mambaforde/bin/activate trimmomatic
+trimmomatic PE -threads 4  input.R1.fq.gz  input.R2.fq.gz  output_R1_trimmed.fq.gz  output_R1_trimmed_U.fq.gz  output_R2_trimmed.fq.gz  output_R2_trimmed_U.fq.gz ILLUMINACLIP:/datanode03/liupf/common_files/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 ```
 
 ### SortmeRNA
 
 ```shell
 #SBATCH
+sourse /datanode03/songq/mambaforde/bin/activate
 conda activate sortmerna
-sortmerna --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/rfam-5.8s-database-id98.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/rfam-5s-database-id98.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/silva-arc-16s-id95.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/silva-arc-23s-id98.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/silva-bac-16s-id90.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/silva-bac-23s-id98.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/silva-euk-18s-id95.fasta --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/silva-euk-28s-id98.fasta --fastx -a 15 -v --log --reads "${id}"_R1_trimmed.fq.gz  --reads "${id}"_R2_trimmed.fq.gz --aligned /datanode03/zhangxf/sortmeAJ/"${id}".align --other /datanode03/zhangxf/sortmeAJ/"${id}".unalign --paired_in --out2 --workdir /datanode03/zhangxf/tmp/"${id}"
+sortmerna --ref /datanode03/liupf/software_lpf/sortmeRNA_db/rfam-5.8s-database-id98.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/rfam-5s-database-id98.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/silva-arc-16s-id95.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/silva-arc-23s-id98.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/silva-bac-16s-id90.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/silva-bac-23s-id98.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/silva-euk-18s-id95.fasta --ref /datanode03/liupf/software_lpf/sortmeRNA_db/silva-euk-28s-id98.fasta --fastx -a 15 -v --log --reads "${id}"_R1_trimmed.fq.gz  --reads "${id}"_R2_trimmed.fq.gz --aligned /datanode03/zhangxf/sortmeAJ/"${id}".align --other /datanode03/zhangxf/sortmeAJ/"${id}".unalign --paired_in --out2 --workdir /datanode03/zhangxf/tmp/"${id}"
 ```
 
 
@@ -42,7 +43,7 @@ sortmerna --ref /data01nfs/user/liupf/software_lpf/sortmeRNA_db/rfam-5.8s-databa
 
 ```bash
 #SBATCH
-
+sourse /datanode03/songq/mambaforde/bin/activate
 conda activate megahit
 megahit -1 id.unalign_fwd.fq.gz -2 id.unalign_rev.fq.gz -t 60 --out-prefix id_megahit --out-dir <output_dir> &> <log.file.name>
 ```
@@ -167,6 +168,7 @@ source /data01nfs/apps/anaconda3/bin/activate
 conda activate /data01nfs/apps/anaconda3/envs/cd-hit-4.8.1
 cd-hit -i rdrp_orf_quality_check.faa -o rdrp_orf_OTU_quality_check.faa -c  0.9  -d 0
 ```
+
 **同时要得到：**
 1. RdRp ORF nt 序列
 2. RdRp 全长 contig nt 序列

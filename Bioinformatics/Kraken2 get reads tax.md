@@ -45,7 +45,21 @@ done < metaGid.txt.u
 ... To do ...
 
 ## ARGs_OAP
-> Custom Database
+> ARGdb
+```
+......
+args_oap stage_one -i ./ -o arg-oap_out-ARGdb -t 30 ;
+args_oap stage_two -i arg-oap_out-ARGdb -t 30 ;
+......
+```
+> MGEdb
+```
+......
+args_oap stage_one -i ./ -o arg-oap_out-MGEdb -t 30 --database /datanode02/wuzz/mge_cds_modified.faa;
+args_oap stage_two -i arg-oap_out-MGEdb -t 30 --database /datanode02/wuzz/mge_cds_modified.faa --structure1 /datanode02/yinghl/MGE_structure.txt
+......
+```
+> VFdb
 ```
 #!/bin/bash
 #SBATCH -J vfdb-test
@@ -58,8 +72,8 @@ done < metaGid.txt.u
 #SBATCH -A cnl2
 #SBATCH --mail-type=FAIL,END,BEGIN
 #SBATCH --mail-user=2261518989@qq.com
-source /datanode02/wuzz/miniconda3/bin/activate 
-conda activate args_oap
+source /datanode02/yangxg/miniconda3/bin/activate 
+conda activate argsoap
 
 args_oap stage_one -i input_dir -o output_dir -t 10 --database /datanode03/songq/database/VFDB/vfdb/VFDB_setB_nt.fas1;
 args_oap stage_two -i output_dir -t 10 --database /datanode03/songq/database/VFDB/vfdb/VFDB_setB_nt.fas1 --structure1 /datanode03/songq/database/VFDB/VFDB_structure.txt
