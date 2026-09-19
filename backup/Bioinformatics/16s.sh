@@ -33,15 +33,16 @@ Mean:   1       372     372     0       4
 # of Seqs:      3605651
 source /data01nfs/apps/anaconda3/bin/activate
 conda activate seqkit-2.2.0
-cat filtered.fa | seqkit seq -m 366 -M 375 > filtered_length.fa #2.5%~97.5% length被保留
+cat filtered.fa | seqkit seq -m 366 -M 375 > filtered_length.fa
 seqkit stats filtered_length.fa
 
 source /data01nfs/apps/anaconda3/bin/activate
-
+conda env list
 conda activate mothur
 mothur
-summary.seqs(fasta=filtered_length.fa,processors=4)
+summary.seqs(fasta=filtered_length.fa,processors=4)    
 quit()
+
 ./usearch -fastx_uniques filtered_length.fa -sizeout -fastaout uniques.fa
 ./usearch -unoise3 uniques.fa -zotus zotus.fa
 
@@ -52,8 +53,6 @@ conda activate mothur
 mothur <<EOF
 classify.seqs(fasta= zotus.fa, template=/datanode03/wenr/database/sliva/silva.nr_v138.align, taxonomy=/datanode03/wenr/database/sliva/silva.nr_v138.tax, cutoff=80, processors=10)
 quit()
-remove.lineage(fasta=zotus.fa, taxonomy=zotus.nr_v138.wang.taxonomy, taxon=Chloroplast-Mitochondria)
 EOF
-
-./usearch -otutab merged_f.fastq -otus zotus.pick.fa -otutabout zotutab_filtered.txt
+./usearch -otutab merged_f.fastq -otus zotus_filt.fa -otutabout zotutab_raw.txt
 
