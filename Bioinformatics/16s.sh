@@ -16,8 +16,8 @@ seqkit stats merged_f.fastq
 seqkit stats stripped.fq
 seqkit stats filtered.fa
 
-source /data01nfs/apps/anaconda3/bin/activate
-conda activate mothur
+
+conda activate /data01nfs/apps/anaconda3/envs/mothur
 mothur
 summary.seqs(fasta=filtered.fa,processors=4) 
 quit()
